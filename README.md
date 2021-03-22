@@ -11,6 +11,8 @@ Glenn Paul Terre - test framework example
 * Naming throughout the framework is concise for minimal documentation and readable / debuggable error messaging.
 * Tests should not contain conditionals
 * Test names should follow `$objectUnderTest_$state_$expectedResult`
+* All test classes are threadsafe for concurrent execution
+* Concurrency is handled through testng suite files.
 
 ## Technologies
 
