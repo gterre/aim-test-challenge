@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ResponseMetadata"
+  ],
+  "properties": {
+    "Item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "createdAt",
+        "description",
+        "price",
+        "sku",
+        "updatedAt"
+      ],
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{10}\\.\\d+$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "pattern": "^\\d{10}\\.\\d+$"
+        }
+      }
+    },
+    "ResponseMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "RequestId",
+        "HTTPStatusCode",
+        "HTTPHeaders",
+        "RetryAttempts"
+      ],
+      "properties": {
+        "RequestId": {
+          "type": "string"
+        },
+        "HTTPStatusCode": {
+          "type": "number"
+        },
+        "HTTPHeaders": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "server",
+            "date",
+            "content-type",
+            "content-length",
+            "connection",
+            "x-amzn-requestid",
+            "x-amz-crc32"
+          ],
+          "properties": {
+            "server": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            },
+            "content-type": {
+              "type": "string"
+            },
+            "content-length": {
+              "type": "string"
+            },
+            "connection": {
+              "type": "string"
+            },
+            "x-amzn-requestid": {
+              "type": "string"
+            },
+            "x-amz-crc32": {
+              "type": "string"
+            }
+          }
+        },
+        "RetryAttempts": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
