@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "createdAt",
+        "description",
+        "price",
+        "sku",
+        "updatedAt"
+      ],
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{10}\\.\\d+$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "pattern": "^\\d{10}\\.\\d+$"
+        }
+      }
+    }
+  ]
+}

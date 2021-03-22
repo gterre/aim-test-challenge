@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Integration Regression" parallel="methods" thread-count="8" data-provider-thread-count="8">
+    <test name="Sku">
+        <classes>
+            <class name="api.TestSkuRestApiHappyPaths"/>
+            <class name="api.TestSkuRestApiSadPaths"/>
+        </classes>
+    </test>
+</suite>
