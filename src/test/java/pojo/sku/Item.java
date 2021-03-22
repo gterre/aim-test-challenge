@@ -10,10 +10,10 @@ public class Item {
     private String createdAt;
 
     @JsonProperty("price")
-    private String price;
+    private Object price;
 
     @JsonProperty("description")
-    private String description;
+    private Object description;
 
     @JsonProperty("sku")
     private String sku;
@@ -25,11 +25,11 @@ public class Item {
         return createdAt;
     }
 
-    public String getPrice() {
+    public Object getPrice() {
         return price;
     }
 
-    public String getDescription() {
+    public Object getDescription() {
         return description;
     }
 
@@ -41,23 +41,14 @@ public class Item {
         return updatedAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    @Override
+    public String toString() {
+        return "Item{" +
+                "createdAt='" + createdAt + '\'' +
+                ", price=" + price +
+                ", description=" + description +
+                ", sku='" + sku + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                '}';
     }
 }

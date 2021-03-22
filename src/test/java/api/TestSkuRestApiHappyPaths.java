@@ -22,26 +22,37 @@ public class TestSkuRestApiHappyPaths extends AbstractTestBase {
 
     private final static String NEW_SKU = UUID.randomUUID().toString();
     private final static String NEW_SKU_DESCRIPTION = "random UUID sku";
-    private final static String NEW_SKU_PRICE = "9.99";
+    private final static int NEW_SKU_PRICE_INTEGER = 1;
+    private final static double NEW_SKU_PRICE_DOUBLE = 9.99;
 
     @Test
-    public void testCreateSku() {
-        String payload = createSkuPayload(NEW_SKU, NEW_SKU_DESCRIPTION, NEW_SKU_PRICE);
+    public void testCreateSku_validPayload_skuIsCreatedWithIntegerPrice() {
+        String payload = createSkuPayload(NEW_SKU, NEW_SKU_DESCRIPTION, NEW_SKU_PRICE_INTEGER);
         createSkuProxy()
                 .createSku(payload).then()
                 .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/CreateSkuResponseSchema.json"))
                 .extract().response();
     }
 
-    @Test(dependsOnMethods = "testCreateSku")
-    public void testGetSku() {
+    @Test
+    public void testCreateSku_validPayload_skuIsCreatedWithDoublePrice() {
+        String payload = createSkuPayload(NEW_SKU, NEW_SKU_DESCRIPTION, NEW_SKU_PRICE_DOUBLE);
+        createSkuProxy()
+                .createSku(payload).then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/CreateSkuResponseSchema.json"))
+                .extract().response();
+    }
+
+    @Test(dependsOnMethods = "testCreateSku_validPayload_skuIsCreatedWithIntegerPrice")
+    public void testGetSku_skuExists_skuIsReturned() {
         Instant start = Instant.now();
         final int expectedStatusCode = 200;
 
         GetSkuResponse getSkuResponse = createSkuProxy()
                 .getSku(NEW_SKU).then()
                 .statusCode(expectedStatusCode)
-                .body(matchesJsonSchemaInClasspath("schemas/GetSkuResponseSchema.json"))
                 .extract().response().as(GetSkuResponse.class);
 
         // assert
@@ -53,14 +64,21 @@ public class TestSkuRestApiHappyPaths extends AbstractTestBase {
         // TODO : add pattern value checking in schema and more assertions - omitting for test-challenge
     }
 
-    @Test(dependsOnMethods = "testCreateSku")
-    public void testGetSkus() {
+    @Test
+    public void testGetSkus_verifySchema() {
+        createSkuProxy()
+                .getSkus().then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/GetSkusResponseSchema.json"));
+    }
+
+    @Test(dependsOnMethods = "testCreateSku_validPayload_skuIsCreatedWithIntegerPrice")
+    public void testGetSkus_skuExists_skuIsInList() {
         Instant start = Instant.now();
 
         Item[] items = createSkuProxy()
                 .getSkus().then()
                 .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/GetSkusResponseSchema.json"))
                 .extract().response().as(Item[].class);
 
         List<Item> actual = Arrays.stream(items).filter(x -> x.getSku().equals(NEW_SKU)).collect(Collectors.toList());
@@ -68,8 +86,14 @@ public class TestSkuRestApiHappyPaths extends AbstractTestBase {
         verifyItem(actual.get(0), start);
     }
 
-    @Test(dependsOnMethods = {"testGetSkus", "testGetSku", "testCreateSku"})
-    public void testDeleteSku() {
+    @Test(dependsOnMethods = {
+            "testCreateSku_validPayload_skuIsCreatedWithIntegerPrice",
+            "testGetSku_skuExists_skuIsReturned",
+            "testGetSkus_skuExists_skuIsInList"
+    })
+    public void testDeleteSku_skuExists_skuIsRemoved() {
+
+        // TODO : Verify with dev that 200 is expected, 204 would be the more appropriate status code
         final int expectedStatusCode = 200;
         SkuProxy skuProxy = createSkuProxy();
 
@@ -90,8 +114,8 @@ public class TestSkuRestApiHappyPaths extends AbstractTestBase {
     private void verifyItem(Item item, Instant start) {
         assertThat(item, notNullValue());
         assertThat(item.getSku(), equalTo(NEW_SKU));
-        assertThat(item.getDescription(), equalTo(NEW_SKU_DESCRIPTION));
-        assertThat(item.getPrice(), equalTo(NEW_SKU_PRICE));
+        assertThat((String) item.getDescription(), equalTo(NEW_SKU_DESCRIPTION));
+        assertThat((Integer) item.getPrice(), equalTo(NEW_SKU_PRICE_INTEGER));
         // TODO : non-input values, ie... created / updated datetime values, omitting for test-challenge
         // sudo code for now
         // value pattern already checked in schema validator,
