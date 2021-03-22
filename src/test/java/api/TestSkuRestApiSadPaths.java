@@ -12,7 +12,8 @@ public class TestSkuRestApiSadPaths extends AbstractTestBase {
 
     @Test
     public void testGetSku_skuDoesNotExist_returns200WithItemNotSet() {
-        GetSkuResponse GetSkuResponse = createSkuProxy().getSku(UUID.randomUUID().toString()).then()
+        GetSkuResponse GetSkuResponse = createSkuProxy()
+                .getSku(UUID.randomUUID().toString()).then()
                 .statusCode(200)
                 .extract().response().as(GetSkuResponse.class);
 
@@ -21,9 +22,9 @@ public class TestSkuRestApiSadPaths extends AbstractTestBase {
 
     @Test
     public void testDeleteSku_skuDoesNotExist_returns404() {
-        createSkuProxy().deleteSku(UUID.randomUUID().toString()).then()
-                .statusCode(404)
-                .extract().response();
+        createSkuProxy()
+                .deleteSku(UUID.randomUUID().toString()).then()
+                .statusCode(404);
     }
 
     @Test(dataProvider = "dataSetFor400RequestForCreateSku", dataProviderClass = SkuDataProvider.class)
@@ -33,7 +34,6 @@ public class TestSkuRestApiSadPaths extends AbstractTestBase {
         // of the test which is why a purpose is passed but ignored
         createSkuProxy()
                 .createSku(payload).then()
-                .statusCode(400)
-                .extract().response();
+                .statusCode(400);
     }
 }
