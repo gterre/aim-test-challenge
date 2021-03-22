@@ -27,22 +27,41 @@ public class TestSkuRestApiHappyPaths extends AbstractTestBase {
 
     @Test
     public void testCreateSku_validPayload_skuIsCreatedWithIntegerPrice() {
+        Instant start = Instant.now();
         String payload = createSkuPayload(NEW_SKU, NEW_SKU_DESCRIPTION, NEW_SKU_PRICE_INTEGER);
-        createSkuProxy()
+        Item item = createSkuProxy()
                 .createSku(payload).then()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/CreateSkuResponseSchema.json"))
-                .extract().response();
+                .extract().response().as(Item.class);
+
+        // assert
+        verifyItem(item, start);
     }
 
     @Test
     public void testCreateSku_validPayload_skuIsCreatedWithDoublePrice() {
+        Instant start = Instant.now();
         String payload = createSkuPayload(NEW_SKU, NEW_SKU_DESCRIPTION, NEW_SKU_PRICE_DOUBLE);
-        createSkuProxy()
+        Item item = createSkuProxy()
                 .createSku(payload).then()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/CreateSkuResponseSchema.json"))
-                .extract().response();
+                .extract().response().as(Item.class);
+
+        // assert
+        verifyItem(item, start);
+    }
+
+    @Test(dataProvider = "dataSetForNonStandardStrings", dataProviderClass = SkuDataProvider.class)
+    public void testCreateSku_validPayloadWithNonStandardStrings_skuIsCreated(String purpose, String payload) {
+        // purpose is ignored, this describes the test and is printed out in the
+        // emailable-report.html on failure. If the payload is complex, it might be hard to determine the purpose
+        // of the test which is why a purpose is passed but ignored
+        createSkuProxy()
+                .createSku(payload).then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/CreateSkuResponseSchema.json"));
     }
 
     @Test(dependsOnMethods = "testCreateSku_validPayload_skuIsCreatedWithIntegerPrice")

@@ -5,6 +5,7 @@ Glenn Paul Terre - test framework example
 ## Assumptions & Notes
 
 * Price values should be numbers [integer, double].
+* sku and description should be non-empty strings.
 * All invalid requests should return 400.
 * TODOS are left intentionally
 * Error messaging is intended for dev / sdets.
