@@ -2,8 +2,6 @@ package api;
 
 import org.testng.annotations.DataProvider;
 
-import java.util.UUID;
-
 import static org.json.JSONObject.NULL;
 import static proxies.PayloadUtil.createSkuPayload;
 
@@ -34,12 +32,8 @@ public class SkuDataProvider {
                 {"description is bool", createSkuPayload(VALID_SKU, BOOL, VALID_PRICE)},
                 {"price is not set", createSkuPayload(VALID_SKU, VALID_DESCRIPTION, UNDEFINED)},
                 {"price is null", createSkuPayload(VALID_SKU, VALID_DESCRIPTION, NULL)},
-                {"price is string", createSkuPayload(VALID_SKU, VALID_DESCRIPTION, INT)},
+                {"price is string", createSkuPayload(VALID_SKU, VALID_DESCRIPTION, STRING)},
                 {"price is bool", createSkuPayload(VALID_SKU, VALID_DESCRIPTION, BOOL)},
         };
-    }
-
-    private String randomString() {
-        return UUID.randomUUID().toString();
     }
 }

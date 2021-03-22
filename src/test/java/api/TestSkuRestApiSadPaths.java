@@ -16,7 +16,6 @@ public class TestSkuRestApiSadPaths extends AbstractTestBase {
                 .statusCode(200)
                 .extract().response().as(GetSkuResponse.class);
 
-        // assert no longer exists
         assertThat(GetSkuResponse.getItem(), nullValue());
     }
 
