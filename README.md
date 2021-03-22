@@ -47,11 +47,12 @@ overrides all properties.
 - src/test/resources/local.conf
 - src/test/resources/staging.conf (default)
 
-example running the regression profile and explicitly using staging.conf file and overriding `sku.api.domain` property.
+example running the default profile (regression) and explicitly using staging.conf file and overriding the `sku.api.domain` property.
 
 ```sh
 $ mvn clean install -D env.conf="staging" -D sku.api.domain="https://www.google.com"
 ```
+The above command will fail due to the sku endpoint not being part of the www.google.com domain. This example was to show the configuration override hierarchy.
 
 ## Reports
 
